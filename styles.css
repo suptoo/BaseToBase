@@ -115,3 +115,37 @@ label {
 #base1{
     background-color:  #58668b;
 }
+#other-converter {
+    background-color: #39516a;
+    padding: 20px;
+    margin-left: 20px; /* Space between the two sections */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: absolute;
+    top: 100px;
+    left: 50px;
+}
+
+#other-converter h2 {
+    color: white;
+    margin-bottom: 15px;
+}
+
+#other-converter a {
+    color: #90caf9;
+    text-decoration: none;
+}
+
+#other-converter a:hover {
+    text-decoration: underline;
+}
+
+#other-converter ul {
+    list-style: none;
+    padding: 0;
+}
+
+#other-converter ul li {
+    margin-bottom: 8px;
+}
