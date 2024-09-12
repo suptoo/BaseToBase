@@ -3,6 +3,7 @@
     padding: 0;
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
+
 }
 
 .container {
@@ -12,6 +13,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+ 
 }
 
 .calculator {
@@ -19,9 +21,9 @@
     padding: 20px;
     border-radius: 10px;
     max-width: 100%;
+    
 }
 
-/* General Button and Display styles */
 .calculator form input {
     border: 0;
     outline: 0;
@@ -49,48 +51,7 @@ form .display {
 }
 
 .calculator form input {
-    width: 60px;
-    height: 60px;
+    width:  8.633093525179856vh;
+    height:  8.633093525179856vh;
 }
 
-form input.equal {
-    width: 145px;
-}
-
-
-@media (max-width: 1024px) {
-    .calculator form input {
-        width: 14vw;  
-        height: 14vw;
-        font-size: 5vw; 
-    }
-
-    form .display input {
-        font-size: 7vw; 
-    }
-
-    form input.equal {
-        width: 30vw;
-    }
-}
-
-
-@media (max-width: 768px) {
-    .calculator {
-        padding: 10px; 
-    }
-
-    .calculator form input {
-        width: 18vw;  
-        height: 18vw;
-        font-size: 6vw; 
-    }
-
-    form .display input {
-        font-size: 8vw;
-    }
-
-    form input.equal {
-        width: 40vw; 
-    }
-}
