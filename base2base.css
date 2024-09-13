@@ -115,3 +115,29 @@ label {
 #base1{
     background-color:  #58668b;
 }
+
+.home-button {
+    position: absolute;
+    top: 20px; 
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.top-left {
+    left: 20px; 
+}
+.top-right {
+    right: 20px; 
+}
+
+.home-button:hover {
+    background-color: #357ABD;
+}
+
