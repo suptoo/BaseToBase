@@ -9,6 +9,30 @@ body {
     background-color: #303030;
     color: #ffffff;
 }
+#navigation {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 10px 20px;
+}
+
+@media (max-width: 768px) {
+    #navigation {
+        justify-content: center;
+    }
+    #nnn {
+        margin: 5px 10px;
+    }
+}
+#nnn {
+    margin-right: 20px; 
+    color: white; 
+    cursor: pointer; 
+}
+
+#nnn:last-child {
+    margin-right: 0;
+}
 header { 
     text-align: center; 
     margin-bottom: 20px; 
@@ -64,6 +88,7 @@ header {
     color: #ffffff;
     flex-grow: 1;
     font-size: 16px;
+    outline: none;
 }
 
 .equal-btn {
@@ -74,6 +99,11 @@ header {
     border-radius: 3px;
     cursor: pointer;
 }
+@media (max-width: 768px) {
+    .search-bar {
+        max-width: 100%;
+    }
+}
 
 .input-options {
     display: flex;
@@ -83,6 +113,7 @@ header {
 
 }
 
+
 .option {
     background-color: #424242;
     border: none;
@@ -91,7 +122,15 @@ header {
     border-radius: 3px;
     cursor: pointer;
 }
-
+@media (max-width: 768px) {
+    .input-options {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .option {
+        width: 100%;
+    }
+}
 .tagline {
     text-align: center;
     margin-bottom: 20px;
@@ -109,12 +148,11 @@ header {
 
 .categories {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     width: 100%;
     max-width: 1200px;
 }
-
 .category-column h3 {
     margin-top: 0;
     margin-bottom: 15px;
@@ -153,4 +191,20 @@ a {
 a:hover {
     text-decoration: none;
     color: red; 
+}
+#hrline hr {
+    height: 1px;
+    background-color: #cccccc; 
+    border: none; 
+}
+@media (max-width: 768px) {
+    .logo {
+        font-size: 24px;
+    }
+    .category-item {
+        font-size: 14px;
+    }
+    h3 {
+        font-size: 18px;
+    }
 }
