@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Customizable Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+        }
+        .chart-controls {
+            margin-bottom: 20px;
+        }
+        .input-style, .select-style, .button-style {
+            margin-right: 10px;
+            padding: 5px;
+        }
+        .reset-button {
+            background-color: red;
+            color: white;
+        }
+        #chartContainer {
+            margin-top: 20px;
+        }
+        #dataTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        #dataTable th, #dataTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #dataTable th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Your Chart</h1>
+        <div class="chart-controls">
+            <select id="chartType" class="select-style">
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="pie">Pie Chart</option>
+                <option value="doughnut">Doughnut Chart</option>
+                <option value="polarArea">Polar Area Chart</option>
+            </select>
+            <input type="text" id="newLabels" placeholder="Labels (comma-separated)" class="input-style">
+            <input type="text" id="newValues" placeholder="Values (comma-separated)" class="input-style">
+            <button onclick="addDataPoints()" class="button-style">Add Data Points</button>
+            <button onclick="resetData()" class="button-style reset-button">Reset Data</button>
+        </div>
+        <div id="chartContainer">
+            <canvas id="myChart"></canvas>
+        </div>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>Value</th>
+                    <th>Color</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="dataBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let chartData = [
+            
+        ];
+        let myChart;
+
+        function generateRandomColor() {
+            const hue = Math.floor(Math.random() * 360);
+            return `hsl(${hue}, 70%, 50%)`;
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
+            const chartType = document.getElementById('chartType').value;
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: chartType,
+                data: {
+                    labels: chartData.map(d => d.label),
+                    datasets: [{
+                        label: 'Custom Data',
+                        data: chartData.map(d => d.value),
+                        backgroundColor: chartData.map(d => d.color),
+                        borderColor: chartData.map(d => d.color),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function addDataPoints() {
+            const newLabels = document.getElementById('newLabels').value.split(',').map(label => label.trim());
+            const newValues = document.getElementById('newValues').value.split(',').map(value => parseInt(value.trim(), 10));
+
+            if (newLabels.length === newValues.length && newLabels.length > 0) {
+                for (let i = 0; i < newLabels.length; i++) {
+                    chartData.push({ label: newLabels[i], value: newValues[i], color: generateRandomColor() });
+                }
+                updateChart();
+                updateDataTable();
+
+                document.getElementById('newLabels').value = '';
+                document.getElementById('newValues').value = '';
+            } else {
+                alert('Please ensure the number of labels matches the number of values.');
+            }
+        }
+
+        function removeDataPoint(index) {
+            chartData.splice(index, 1);
+            updateChart();
+            updateDataTable();
+        }
+
+        function updateDataTable() {
+            const dataBody = document.getElementById('dataBody');
+            dataBody.innerHTML = '';
+            chartData.forEach((data, index) => {
+                const row = dataBody.insertRow();
+                row.insertCell(0).textContent = data.label;
+                row.insertCell(1).textContent = data.value;
+                const colorCell = row.insertCell(2);
+                colorCell.style.backgroundColor = data.color;
+                colorCell.style.width = '20px';
+                const actionCell = row.insertCell(3);
+                actionCell.innerHTML = `<button onclick="removeDataPoint(${index})">Remove</button>`;
+            });
+        }
+
+        function resetData() {
+            chartData = [
+               
+            ];
+            updateChart();
+            updateDataTable();
+        }
+
+        document.getElementById('chartType').addEventListener('change', updateChart);
+
+        updateChart();
+        updateDataTable();
+    </script>
+</body>
+</html>
