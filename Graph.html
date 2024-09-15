@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    <title> Graph Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        #calculator {
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 100%;
+            height: 600px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1> Graph Calculator</h1>
+    <p>Enter your equations below to see them graphed on the calculator.</p>
+    <div class="input-group">
+        <input type="text" id="equationInput" placeholder="Enter equation, e.g., y=x^2">
+        <button onclick="addEquation()">Add Equation</button>
+        <button onclick="resetCalculator()">Reset Calculator</button>
+    </div>
+    <div id="calculator"></div>
+    <script>
+        var elt = document.getElementById('calculator');
+        var calculator = Desmos.GraphingCalculator(elt, {
+            keypad: true,
+            expressions: true,
+            settingsMenu: true ,
+            zoomButtons: true,
+            branding: false 
+        });
+
+        function addEquation() {
+            var equation = document.getElementById('equationInput').value;
+            if (equation) {
+                calculator.setExpression({ id: 'graph1', latex: equation });
+                document.getElementById('equationInput').value = '';
+            } else {
+                alert('Please enter an equation.');
+            }
+        }
+
+        function resetCalculator() {
+            calculator.setBlank();
+        }
+    </script>
+</body>
+</html>
