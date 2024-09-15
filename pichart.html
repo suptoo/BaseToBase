@@ -3,33 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beautiful Customizable Chart</title>
+    <title>Beautiful Customizable 3D Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-              background-color: white;
+            background: linear-gradient(135deg, #d3cce3, #e9e4f0);
+            color: #333; 
+            min-height: 100vh;
         }
         .container {
-            text-align: center;
-        }
-        .chart-controls {
+            background-color: #d0c1c1;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
             margin-bottom: 20px;
         }
-        .input-style, .select-style, .button-style {
-            margin-right: 10px;
-            padding: 5px;
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
         }
-        .reset-button {
-            background-color: red;
+        .input-group label {
+            flex: 0 0 150px;
+            font-weight: bold;
+        }
+        .input-field {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 15px;
+        }
+        .slice-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .slice-input {
+            flex: 1 0 calc(25% - 15px);
+            min-width: 200px;
+        }
+        .color-picker {
+            width: 30px;
+            height: 30px;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        .button-group {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .button-primary {
+            background-color: #007bff;
             color: white;
         }
-        #chartContainer {
-            margin-top: 20px;
+        .button-danger {
+            background-color: #dc3545;
+            color: white;
         }
         #dataTable {
             width: 100%;
@@ -44,106 +90,121 @@
         #dataTable th {
             background-color: #f2f2f2;
         }
-        #TDD
-        {
-      background-color: red;
-            color:blue;
+        .chart-type-buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .chart-type-button {
+            background-color: #34495e;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .chart-type-button:hover, .chart-type-button.active {
+            background-color: #2c3e50;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Create Your Chart</h1>
-        <div class="chart-controls">
-            <select id="chartType" class="select-style">
-                <option value="bar">Bar Chart</option>
-                <option value="line">Line Chart</option>
-                <option value="pie">Pie Chart</option>
-                <option value="doughnut">Doughnut Chart</option>
-                <option value="polarArea">Polar Area Chart</option>
-                  <option value="radar">Radar Chart</option>
-                <option value="scatter">Scatter Chart</option>
-            </select>
-            <input type="text" id="newLabels" placeholder="Labels (comma-separated)" class="input-style">
-            <input type="text" id="newValues" placeholder="Values (comma-separated)" class="input-style">
-            <button onclick="addDataPoints()" class="button-style">Add Data Points</button>
-            <button onclick="resetData()" class="button-style reset-button">Reset Data</button>
+        <h1>Create Your 3D Chart</h1>
+        <div class="chart-type-buttons">
+            <button class="chart-type-button active" data-type="bar">Bar Graph</button>
+            <button class="chart-type-button" data-type="line">Line Graph</button>
+            <button class="chart-type-button" data-type="doughnut">Doughnut Chart</button>
+            <button class="chart-type-button" data-type="polarArea">PolarArea Chart</button>
         </div>
-        <div id="chartContainer">
-            <canvas id="myChart"></canvas>
+        <div class="input-group">
+            <label>Data Input Method:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="inputMethod" value="slices" checked> Number of slices</label>
+                
+                <label><input type="radio" name="inputMethod" value="csv"> Import CSV</label>
+            </div>
         </div>
-        <table id="dataTable">
-            <thead>
-                <tr id="TDD">
-                    <th>Label</th>
-                    <th>Value</th>
-                    <th>Color</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="dataBody"></tbody>
-        </table>
+        <div class="input-group">
+            <label for="sliceCount">Number of slices:</label>
+           <input type="number" id="sliceCount" class="input-field" placeholder="Enter number of slices">
+        </div>
+        <div class="input-group">
+            <label for="seriesName">Series Details:</label>
+            <input type="text" id="seriesName" class="input-field" placeholder="Enter Series name">
+        </div>
+        <div class="input-group">
+            <label for="seriesUnit">Series Unit:</label>
+            <input type="text" id="seriesUnit" class="input-field" placeholder="Enter Unit name">
+        </div>
     </div>
+
+    <div class="container">
+        <h3>Slice Details</h3>
+        <div class="slice-container" id="sliceInputs">
+          
+        </div>
+    </div>
+
+    <div class="button-group">
+        <button onclick="addDataPoints()" class="button button-primary">Add Data Points</button>
+        <button onclick="resetData()" class="button button-danger">Reset Data</button>
+    </div>
+
+    <div id="chartContainer">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>Value</th>
+                <th>Color</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="dataBody"></tbody>
+    </table>
 
     <script>
         let chartData = [
-            { label: '1', value: 300, color: '#ff6384' },
-            { label: '2', value: 50, color: '#36a2eb' }
+           
         ];
         let myChart;
+        let currentChartType = 'bar';
 
-        function generateRandomColor() {
-            const hue = Math.floor(Math.random() * 360);
-            return `hsl(${hue}, 70%, 50%)`;
-        }
+        function generateSliceInputs() {
+            const sliceCount = document.getElementById('sliceCount').value;
+            const container = document.getElementById('sliceInputs');
+            container.innerHTML = '';
 
-        function updateChart() {
-            const ctx = document.getElementById('myChart').getContext('2d');
-            const chartType = document.getElementById('chartType').value;
-
-            if (myChart) {
-                myChart.destroy();
+            for (let i = 1; i <= sliceCount; i++) {
+                const sliceDiv = document.createElement('div');
+                sliceDiv.className = 'slice-input';
+                sliceDiv.innerHTML = `
+                    <h4>Slice ${i} <span style="color: #17a2b8;">Required</span></h4>
+                    <input type="text" class="input-field" placeholder="Name">
+                    <input type="number" class="input-field" placeholder="Value">
+                    <input type="color" class="color-picker" value="#${Math.floor(Math.random()*16777215).toString(16)}">
+                `;
+                container.appendChild(sliceDiv);
             }
-
-            myChart = new Chart(ctx, {
-                type: chartType,
-                data: {
-                    labels: chartData.map(d => d.label),
-                    datasets: [{
-                        label: 'Custom Data',
-                        data: chartData.map(d => d.value),
-                        backgroundColor: chartData.map(d => d.color),
-                        borderColor: chartData.map(d => d.color),
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
         }
 
         function addDataPoints() {
-            const newLabels = document.getElementById('newLabels').value.split(',').map(label => label.trim());
-            const newValues = document.getElementById('newValues').value.split(',').map(value => parseInt(value.trim(), 10));
-
-            if (newLabels.length === newValues.length && newLabels.length > 0) {
-                for (let i = 0; i < newLabels.length; i++) {
-                    chartData.push({ label: newLabels[i], value: newValues[i], color: generateRandomColor() });
-                }
-                updateChart();
-                updateDataTable();
-
-                document.getElementById('newLabels').value = '';
-                document.getElementById('newValues').value = '';
-            } else {
-                alert('Please ensure the number of labels matches the number of values.');
-            }
+            const inputs = document.querySelectorAll('.slice-input');
+            chartData = Array.from(inputs).map((input, index) => {
+                return {
+                    label: input.querySelector('input[type="text"]').value || `Slice ${index + 1}`,
+                    value: parseInt(input.querySelector('input[type="number"]').value) || 0,
+                    color: input.querySelector('input[type="color"]').value
+                };
+            });
+            updateChart();
+            updateDataTable();
         }
 
         function removeDataPoint(index) {
@@ -173,10 +234,65 @@
             ];
             updateChart();
             updateDataTable();
+            generateSliceInputs();
         }
 
-        document.getElementById('chartType').addEventListener('change', updateChart);
+        function updateChart() {
+            const ctx = document.getElementById('myChart').getContext('2d');
 
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            myChart = new Chart(ctx, {
+                type: currentChartType,
+                data: {
+                    labels: chartData.map(d => d.label),
+                    datasets: [{
+                        label: 'Custom Data',
+                        data: chartData.map(d => d.value),
+                        backgroundColor: chartData.map(d => d.color),
+                        borderColor: chartData.map(d => d.color),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        chart3d: {
+                            enabled: true,
+                            alpha: 10,
+                            beta: 10,
+                            depth: 50,
+                            viewDistance: 25,
+                            axis: {
+                                x: { color: '#000000' },
+                                y: { color: '#000000' },
+                                z: { color: '#000000' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.querySelectorAll('.chart-type-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelector('.chart-type-button.active').classList.remove('active');
+                this.classList.add('active');
+                currentChartType = this.dataset.type;
+                updateChart();
+            });
+        });
+
+        document.getElementById('sliceCount').addEventListener('change', generateSliceInputs);
+
+        generateSliceInputs();
         updateChart();
         updateDataTable();
     </script>
