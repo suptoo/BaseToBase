@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create  Chart</title>
+    <title>Your Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
     <link rel="stylesheet" href="pichart.css">
-      
 </head>
 <body>
     <div class="container">
-        <h1>Create Your Creative Chart</h1>
+        <h1>Create Your  Creative Chart</h1>
         <div class="chart-type-buttons">
             <button class="chart-type-button active" data-type="bar">Bar Graph</button>
             <button class="chart-type-button" data-type="line">Line Graph</button>
@@ -22,13 +21,12 @@
             <label>Data Input Method:</label>
             <div class="radio-group">
                 <label><input type="radio" name="inputMethod" value="slices" checked> Number of slices</label>
-                
                 <label><input type="radio" name="inputMethod" value="csv"> Import CSV</label>
             </div>
         </div>
         <div class="input-group">
             <label for="sliceCount">Number of slices:</label>
-           <input type="number" id="sliceCount" class="input-field" placeholder="Enter number of slices">
+            <input type="number" id="sliceCount" class="input-field" placeholder="Enter number of slices">
         </div>
         <div class="input-group">
             <label for="seriesName">Series Details:</label>
@@ -40,16 +38,16 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="loll">
         <h3>Slice Details</h3>
         <div class="slice-container" id="sliceInputs">
-          
         </div>
     </div>
 
     <div class="button-group">
         <button onclick="addDataPoints()" class="button button-primary">Add Data Points</button>
         <button onclick="resetData()" class="button button-danger">Reset Data</button>
+        <button onclick="downloadChart()" class="button button-success" id="downloadButton" disabled>Download Chart</button>
     </div>
 
     <div id="chartContainer">
@@ -69,9 +67,7 @@
     </table>
 
     <script>
-        let chartData = [
-           
-        ];
+        let chartData = [];
         let myChart;
         let currentChartType = 'bar';
 
@@ -104,6 +100,7 @@
             });
             updateChart();
             updateDataTable();
+            document.getElementById('downloadButton').disabled = false;
         }
 
         function removeDataPoint(index) {
@@ -128,12 +125,11 @@
         }
 
         function resetData() {
-            chartData = [
-               
-            ];
+            chartData = [];
             updateChart();
             updateDataTable();
             generateSliceInputs();
+            document.getElementById('downloadButton').disabled = true;
         }
 
         function updateChart() {
@@ -178,6 +174,18 @@
                     }
                 }
             });
+
+            document.getElementById('downloadButton').disabled = false;
+        }
+
+        function downloadChart() {
+            const canvas = document.getElementById('myChart');
+            const link = document.createElement('a');
+            link.download = 'my-chart.png';
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         document.querySelectorAll('.chart-type-button').forEach(button => {
@@ -191,9 +199,12 @@
 
         document.getElementById('sliceCount').addEventListener('change', generateSliceInputs);
 
-        generateSliceInputs();
-        updateChart();
-        updateDataTable();
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('downloadButton').disabled = true;
+            generateSliceInputs();
+            updateChart();
+            updateDataTable();
+        });
     </script>
 </body>
 </html>
