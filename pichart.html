@@ -3,116 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beautiful  Chart</title>
+    <title>Beautiful Customizable 3D Chart</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-3d"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #d3cce3, #e9e4f0);
-            color: #333; 
-            min-height: 100vh;
-        }
-        .container {
-            background-color: #d0c1c1;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .input-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .input-group label {
-            flex: 0 0 150px;
-            font-weight: bold;
-        }
-        .input-field {
-            flex: 1;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-        .radio-group {
-            display: flex;
-            gap: 15px;
-        }
-        .slice-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .slice-input {
-            flex: 1 0 calc(25% - 15px);
-            min-width: 200px;
-        }
-        .color-picker {
-            width: 30px;
-            height: 30px;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-        }
-        .button-group {
-            margin-top: 20px;
-            text-align: right;
-        }
-        .button {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .button-primary {
-            background-color: #007bff;
-            color: white;
-        }
-        .button-danger {
-            background-color: #dc3545;
-            color: white;
-        }
-        #dataTable {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        #dataTable th, #dataTable td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        #dataTable th {
-            background-color: #f2f2f2;
-        }
-        .chart-type-buttons {
-            display: flex;
-            justify-content: flex-start;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .chart-type-button {
-            background-color: #34495e;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .chart-type-button:hover, .chart-type-button.active {
-            background-color: #2c3e50;
-        }
-    </style>
+    <link rel="stylesheet" href="pichart.css">
+      
 </head>
 <body>
     <div class="container">
-        <h1>Create Your  Chart</h1>
+        <h1>Create Your 3D Chart</h1>
         <div class="chart-type-buttons">
             <button class="chart-type-button active" data-type="bar">Bar Graph</button>
             <button class="chart-type-button" data-type="line">Line Graph</button>
